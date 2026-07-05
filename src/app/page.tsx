@@ -1,17 +1,23 @@
-import Link from "next/link";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { CampaignSection } from "@/components/sections/CampaignSection";
+import { FaqSection } from "@/components/sections/FaqSection";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ImpactSection } from "@/components/sections/ImpactSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 
 export default function Home() {
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold">UNICEF Donation</h1>
-      <nav className="mt-4 flex gap-4">
-        <Link href="/donate" className="text-blue-600 underline">
-          Donate
-        </Link>
-        <Link href="/campaign" className="text-blue-600 underline">
-          Campaign
-        </Link>
-      </nav>
-    </div>
+    <>
+      <SiteHeader />
+      <main>
+        <HeroSection />
+        <ImpactSection />
+        <CampaignSection />
+        <FaqSection />
+        <TestimonialsSection />
+      </main>
+      <SiteFooter />
+    </>
   );
 }

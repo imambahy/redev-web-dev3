@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 360" role="img" aria-label="Pemanfaatan Program UNICEF Indonesia">
+  <rect width="520" height="360" fill="#ffffff" rx="12"/>
+  <text x="260" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#003a5d">Pemanfaatan Program</text>
+  <circle cx="150" cy="190" r="88" fill="#00aeef"/>
+  <path d="M150 102 A88 88 0 0 1 238 190 L150 190 Z" fill="#0072bc"/>
+  <path d="M238 190 A88 88 0 0 1 150 278 L150 190 Z" fill="#ffc10e"/>
+  <path d="M150 278 A88 88 0 0 1 62 190 L150 190 Z" fill="#7bc043"/>
+  <path d="M62 190 A88 88 0 0 1 150 102 L150 190 Z" fill="#f28c28"/>
+  <g font-family="Arial, sans-serif" font-size="14" fill="#333333">
+    <rect x="270" y="70" width="14" height="14" fill="#0072bc"/><text x="292" y="82">Kesehatan 27%</text>
+    <rect x="270" y="98" width="14" height="14" fill="#00aeef"/><text x="292" y="110">Pendidikan 11%</text>
+    <rect x="270" y="126" width="14" height="14" fill="#ffc10e"/><text x="292" y="138">Perlindungan Anak 10%</text>
+    <rect x="270" y="154" width="14" height="14" fill="#7bc043"/><text x="292" y="166">Gizi 8%</text>
+    <rect x="270" y="182" width="14" height="14" fill="#f28c28"/><text x="292" y="194">WASH 8%</text>
+    <rect x="270" y="210" width="14" height="14" fill="#5c6bc0"/><text x="292" y="222">Lintas Sektor 14%</text>
+    <rect x="270" y="238" width="14" height="14" fill="#26a69a"/><text x="292" y="250">Komunikasi 7%</text>
+    <rect x="270" y="266" width="14" height="14" fill="#8d6e63"/><text x="292" y="278">Data/T4D 4%</text>
+    <rect x="270" y="294" width="14" height="14" fill="#bdbdbd"/><text x="292" y="306">Pengelolaan Program 3%</text>
+  </g>
+</svg>

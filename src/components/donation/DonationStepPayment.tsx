@@ -1,0 +1,118 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import type { DonationType } from "@/types/campaign";
+import {
+  donationPaymentCategories,
+  donationPaymentOptions,
+  type DonationPaymentCategoryId,
+} from "@/lib/constants/payment";
+import { Button } from "@/components/ui/Button";
+import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
+import { formatCurrency } from "@/lib/utils/format-currency";
+import { DonationImpactMessage } from "@/components/donation/DonationImpactMessage";
+
+type DonationStepPaymentProps = {
+  amount: number;
+  donationType: DonationType;
+  benefit: string;
+  selectedMethod: string;
+  error?: string;
+  onMethodChange: (methodId: string, route: string) => void;
+  onContinue: () => void;
+};
+
+export function DonationStepPayment({
+  amount,
+  donationType,
+  benefit,
+  selectedMethod,
+  error,
+  onMethodChange,
+  onContinue,
+}: DonationStepPaymentProps) {
+  const [activeCategory, setActiveCategory] =
+    useState<DonationPaymentCategoryId>("debit-card");
+
+  const methods = useMemo(
+    () => donationPaymentOptions[activeCategory],
+    [activeCategory],
+  );
+
+  const period = donationType === "bulanan" ? "/Bulan" : "";
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <p className="text-2xl font-bold text-primary">
+          {formatCurrency(amount)}
+          {period}
+        </p>
+        <div className="mt-2">
+          <DonationImpactMessage
+            amount={amount}
+            donationType={donationType}
+            benefit={benefit}
+          />
+        </div>
+      </div>
+
+      <SegmentedTabs
+        items={donationPaymentCategories.map((category) => ({
+          id: category.id,
+          label: category.label,
+        }))}
+        activeId={activeCategory}
+        onChange={setActiveCategory}
+        ariaLabel="Kategori pembayaran"
+        size="compact"
+        className="bg-surface-muted"
+      />
+
+      <div className="space-y-3">
+        {methods.map((method) => {
+          const isSelected = selectedMethod === method.id;
+          return (
+            <button
+              key={method.id}
+              type="button"
+              onClick={() => onMethodChange(method.id, method.route)}
+              className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-left transition-colors ${
+                isSelected
+                  ? "border-accent bg-accent/10"
+                  : "border-border bg-surface hover:border-primary/40"
+              }`}
+            >
+              <span className="flex items-center gap-3">
+                <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
+                  {method.label.slice(0, 2).toUpperCase()}
+                </span>
+                <span className="text-sm font-semibold text-text">
+                  {method.label}
+                </span>
+              </span>
+              <span
+                className={`size-5 rounded-full border-2 ${
+                  isSelected
+                    ? "border-accent bg-accent"
+                    : "border-border bg-surface"
+                }`}
+                aria-hidden="true"
+              />
+            </button>
+          );
+        })}
+      </div>
+
+      {error ? (
+        <p className="text-xs text-red-600" role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <Button type="button" shape="pill" className="w-full" onClick={onContinue}>
+        Mulai Berdonasi
+      </Button>
+    </div>
+  );
+}

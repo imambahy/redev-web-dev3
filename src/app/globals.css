@@ -1,11 +1,217 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary: #00aeef;
+  --color-primary-dark: #0096d1;
+  --color-primary-light: #e6f6fd;
+  --color-accent: #ffc10e;
+  --color-accent-dark: #e6ad00;
+  --color-badge: #f97316;
+  --color-hero-overlay: #002c43;
+  --color-text: #333333;
+  --color-text-muted: #666666;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f9f9f9;
+  --color-border: #d9d9d9;
+  --color-footer: #2653ba;
+
+  --font-sans: var(--font-noto-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 2px 12px rgb(0 0 0 / 0.08);
+  --shadow-header: 0 1px 8px rgb(0 0 0 / 0.06);
+
+  --spacing-section: 4rem;
+  --spacing-section-lg: 5rem;
+  --container-landing: 90rem;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+@keyframes donation-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes donation-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes donation-modal-in {
+  from {
+    opacity: 0;
+    transform: translateX(2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes donation-modal-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(2.5rem);
+  }
+}
+
+@keyframes donation-step-forward {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes donation-step-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.donation-backdrop-enter {
+  animation: donation-backdrop-in 300ms ease-out both;
+}
+
+.donation-backdrop-exit {
+  animation: donation-backdrop-out 300ms ease-in both;
+}
+
+.donation-modal-enter {
+  animation: donation-modal-in 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.donation-modal-exit {
+  animation: donation-modal-out 300ms ease-in both;
+}
+
+.donation-step-enter-forward {
+  animation: donation-step-forward 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.donation-step-enter-backward {
+  animation: donation-step-backward 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes nav-dropdown-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes nav-dropdown-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nav-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes nav-dropdown-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
+}
+
+@keyframes nav-dropdown-content-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nav-dropdown-backdrop-enter {
+  animation: nav-dropdown-backdrop-in 600ms ease-out both;
+}
+
+.nav-dropdown-backdrop-exit {
+  animation: nav-dropdown-backdrop-out 500ms ease-in both;
+}
+
+.nav-dropdown-enter {
+  animation: nav-dropdown-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.nav-dropdown-exit {
+  animation: nav-dropdown-out 500ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.nav-dropdown-content-enter {
+  animation: nav-dropdown-content-in 500ms ease-out 120ms both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .donation-backdrop-enter,
+  .donation-backdrop-exit,
+  .donation-modal-enter,
+  .donation-modal-exit,
+  .donation-step-enter-forward,
+  .donation-step-enter-backward,
+  .nav-dropdown-enter,
+  .nav-dropdown-exit,
+  .nav-dropdown-backdrop-enter,
+  .nav-dropdown-backdrop-exit,
+  .nav-dropdown-content-enter {
+    animation: none !important;
+  }
 }

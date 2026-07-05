@@ -8,7 +8,7 @@ export default function LocaleHome() {
         <Link href="/donate" className="text-blue-600 underline">
           Donate
         </Link>
-        <Link href="/campaign" className="text-blue-600 underline">
+        <Link href="/campaigns" className="text-blue-600 underline">
           Campaign
         </Link>
       </nav>
