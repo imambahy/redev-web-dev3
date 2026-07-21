@@ -1,0 +1,60 @@
+"use client";
+
+import { Button } from "@/components/ui/Button";
+import { formatCurrency } from "@/lib/utils/format-currency";
+
+type DonationStepCommitmentProps = {
+  oneTimeAmount: number;
+  monthlyAmount?: number;
+  onAcceptMonthly: () => void;
+  onKeepOneTime: () => void;
+};
+
+export function DonationStepCommitment({
+  oneTimeAmount,
+  monthlyAmount = 150_000,
+  onAcceptMonthly,
+  onKeepOneTime,
+}: DonationStepCommitmentProps) {
+  return (
+    <div className="flex flex-col gap-5 pb-2">
+      <div className="text-center">
+        <h3 className="text-xl font-bold leading-snug text-[#003144] md:text-2xl">
+          Bantu mereka hari ini, lindungi mereka{" "}
+          <span className="text-primary">selamanya</span>
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-text-muted">
+          Donasi {formatCurrency(oneTimeAmount)} Anda sangat berarti. Jadilah{" "}
+          <span className="font-semibold text-primary">Pendekar Anak</span>{" "}
+          dengan komitmen bulanan agar bantuan untuk anak-anak tidak pernah
+          terhenti.
+        </p>
+      </div>
+
+      <div className="rounded-2xl bg-badge px-5 py-6 text-center text-white">
+        <p className="text-2xl font-bold md:text-3xl">
+          {formatCurrency(monthlyAmount)} / bulan
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-white/95">
+          Dapatkan Gelang Pendekar Anak eksklusif sebagai apresiasi atas
+          komitmen Anda melindungi masa depan anak Indonesia.
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <Button type="button" shape="pill" className="w-full" onClick={onAcceptMonthly}>
+          Ya, Jadi Pendekar Anak
+        </Button>
+        <Button
+          type="button"
+          shape="pill"
+          variant="outline"
+          className="w-full !border-accent !text-accent hover:!bg-accent/10"
+          onClick={onKeepOneTime}
+        >
+          Tetap Donasi {formatCurrency(oneTimeAmount)}
+        </Button>
+      </div>
+    </div>
+  );
+}

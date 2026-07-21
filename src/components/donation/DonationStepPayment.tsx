@@ -32,7 +32,7 @@ export function DonationStepPayment({
   onContinue,
 }: DonationStepPaymentProps) {
   const [activeCategory, setActiveCategory] =
-    useState<DonationPaymentCategoryId>("debit-card");
+    useState<DonationPaymentCategoryId>("credit-card");
 
   const methods = useMemo(
     () => donationPaymentOptions[activeCategory],
@@ -42,9 +42,9 @@ export function DonationStepPayment({
   const period = donationType === "bulanan" ? "/Bulan" : "";
 
   return (
-    <div className="space-y-5">
-      <div>
-        <p className="text-2xl font-bold text-primary">
+    <div className="space-y-5 pb-2">
+      <div className="text-center">
+        <p className="text-2xl font-bold text-[#003144] md:text-3xl">
           {formatCurrency(amount)}
           {period}
         </p>
@@ -66,7 +66,7 @@ export function DonationStepPayment({
         onChange={setActiveCategory}
         ariaLabel="Kategori pembayaran"
         size="compact"
-        className="bg-surface-muted"
+        className="border-border bg-surface-muted"
       />
 
       <div className="space-y-3">
@@ -79,7 +79,7 @@ export function DonationStepPayment({
               onClick={() => onMethodChange(method.id, method.route)}
               className={`flex w-full items-center justify-between rounded-xl border px-4 py-4 text-left transition-colors ${
                 isSelected
-                  ? "border-accent bg-accent/10"
+                  ? "border-accent bg-[#FFF8E8]"
                   : "border-border bg-surface hover:border-primary/40"
               }`}
             >
@@ -92,13 +92,15 @@ export function DonationStepPayment({
                 </span>
               </span>
               <span
-                className={`size-5 rounded-full border-2 ${
-                  isSelected
-                    ? "border-accent bg-accent"
-                    : "border-border bg-surface"
+                className={`flex size-5 items-center justify-center rounded-full border-2 ${
+                  isSelected ? "border-accent" : "border-border bg-surface"
                 }`}
                 aria-hidden="true"
-              />
+              >
+                {isSelected ? (
+                  <span className="size-2.5 rounded-full bg-accent" />
+                ) : null}
+              </span>
             </button>
           );
         })}

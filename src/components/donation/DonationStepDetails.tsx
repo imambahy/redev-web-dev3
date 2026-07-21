@@ -47,8 +47,10 @@ export function DonationStepDetails({
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-bold text-primary">Kenalan lebih dekat, yuk</h3>
+    <div className="space-y-4 pb-2">
+      <h3 className="text-center text-lg font-bold text-[#003144] md:text-xl">
+        Kenalan lebih dekat, yuk
+      </h3>
 
       <DonationFormField id="donate_name" label="Nama" error={errors.name}>
         <input
@@ -120,7 +122,7 @@ export function DonationStepDetails({
       ) : null}
 
       <Button type="button" shape="pill" className="w-full" onClick={onContinue}>
-        Mulai Berdonasi
+        Pilih Metode Pembayaran
       </Button>
     </div>
   );

@@ -221,6 +221,7 @@ type CarouselProgressProps = {
   current: number;
   total: number;
   className?: string;
+  tone?: "default" | "onPrimary";
 };
 
 export function CarouselProgress({
@@ -250,6 +251,7 @@ export function CarouselSegmentProgress({
   current,
   total,
   className = "",
+  tone = "default",
 }: CarouselProgressProps) {
   if (total <= 0) return null;
 
@@ -265,8 +267,14 @@ export function CarouselSegmentProgress({
       {Array.from({ length: total }, (_, i) => (
         <div
           key={i}
-          className={`h-1.5 w-28 rounded-full transition-colors duration-300 ${
-            i === current ? "bg-primary" : "bg-border"
+          className={`h-1 w-8 rounded-full transition-colors duration-300 md:h-1.5 md:w-28 ${
+            i === current
+              ? tone === "onPrimary"
+                ? "bg-white"
+                : "bg-primary"
+              : tone === "onPrimary"
+                ? "bg-white/40"
+                : "bg-border"
           }`}
         />
       ))}

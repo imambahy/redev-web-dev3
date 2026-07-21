@@ -3,6 +3,39 @@ import { routes } from "@/lib/constants/routes";
 
 export const faqCategories: FaqCategory[] = [
   {
+    id: "gelang-pendekar",
+    label: "Gelang Pendekar Anak",
+    items: [
+      {
+        id: "gelang-how",
+        question: "Bagaimana cara mendapatkan Gelang Pendekar Anak?",
+        answer:
+          "Gelang Pendekar Anak UNICEF tersedia secara eksklusif bagi Anda yang telah melakukan pendaftaran donasi rutin melalui situs donasi unicef.id mulai dari Rp150.000/bulan.",
+      },
+      {
+        id: "gelang-when",
+        question:
+          "Kapan saya bisa menerima Gelang Pendekar Anak setelah donasi berhasil?",
+        answer:
+          "Gelang Pendekar Anak akan dikirimkan ke alamat yang Anda daftarkan setelah donasi rutin pertama Anda berhasil diproses. Proses pengiriman membutuhkan waktu kurang lebih 2-4 minggu kerja.",
+      },
+      {
+        id: "gelang-delay",
+        question:
+          "Bagaimana apabila Gelang Pendekar Anak belum saya terima lebih dari 30 hari?",
+        answer:
+          "Jika Gelang belum diterima lebih dari 30 hari, silakan hubungi Tim Donor Care UNICEF melalui email donorlove@unicef.id atau telepon 021-31111200.",
+      },
+      {
+        id: "gelang-existing",
+        question:
+          "Saya sudah menjadi donatur rutin (Pendekar Anak) dan ingin mendapatkan Gelang Pendekar Anak, bagaimana caranya?",
+        answer:
+          "Silakan hubungi Tim Donor Care untuk informasi kelayakan dan cara mendapatkan Gelang Pendekar Anak sebagai donatur rutin yang sudah terdaftar.",
+      },
+    ],
+  },
+  {
     id: "seputar-donasi",
     label: "Seputar Donasi",
     items: [
@@ -29,30 +62,6 @@ export const faqCategories: FaqCategory[] = [
     ],
   },
   {
-    id: "gelang-pendekar",
-    label: "Gelang Pendekar Anak",
-    items: [
-      {
-        id: "gelang-what",
-        question: "Apa itu Gelang Pendekar Anak?",
-        answer:
-          "Gelang Pendekar Anak adalah simbol keanggotaan dan apresiasi bagi donatur rutin UNICEF Indonesia yang berkomitmen mendukung anak-anak melalui donasi bulanan.",
-      },
-      {
-        id: "gelang-how",
-        question: "Bagaimana cara mendapatkan Gelang Pendekar Anak?",
-        answer:
-          "Gelang Pendekar Anak diberikan kepada donatur yang telah melakukan donasi rutin sesuai ketentuan program. Informasi detail akan dikirimkan melalui email setelah Anda memenuhi persyaratan.",
-      },
-      {
-        id: "gelang-benefits",
-        question: "Apa manfaat menjadi Pendekar Anak?",
-        answer:
-          "Sebagai Pendekar Anak, Anda akan menerima laporan berkala tentang dampak donasi, undangan acara khusus, dan kesempatan untuk terlibat lebih dekat dengan misi UNICEF.",
-      },
-    ],
-  },
-  {
     id: "dampak-positif-donasi",
     label: "Dampak Positif Donasi",
     items: [
@@ -73,7 +82,7 @@ export const faqCategories: FaqCategory[] = [
         question: "Apakah ada laporan tahunan yang bisa saya baca?",
         answer:
           "Ya, UNICEF menerbitkan laporan tahunan yang dapat diunduh dari website resmi. Laporan tersebut merinci pencapaian program dan penggunaan dana donasi.",
-      }
+      },
     ],
   },
 ];

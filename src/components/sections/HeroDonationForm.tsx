@@ -6,9 +6,30 @@ import { useRouter } from "next/navigation";
 import { homeHeroContent } from "@/lib/constants/home-hero";
 import { footerSecurityBadges } from "@/lib/constants/navigation";
 import { Button } from "@/components/ui/Button";
+import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
 import { formatCurrency } from "@/lib/utils/format-currency";
 
 type HomeDonationTab = "bulanan" | "satu-kali";
+
+const donationTabItems: { id: HomeDonationTab; label: ReactNode }[] = [
+  {
+    id: "bulanan",
+    label: (
+      <>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/donation/penthol-donate-type.svg"
+          alt=""
+          width={44}
+          height={44}
+          className="pointer-events-none absolute top-1/2 left-2 z-10 size-9 -translate-y-[calc(50%+10px)] object-contain"
+        />
+        Pendekar Anak
+      </>
+    ),
+  },
+  { id: "satu-kali", label: "Donasi satu kali" },
+];
 
 export function HeroDonationForm() {
   const router = useRouter();
@@ -38,20 +59,15 @@ export function HeroDonationForm() {
 
   return (
     <aside className="w-full max-w-md rounded-2xl bg-surface p-5 shadow-card lg:ml-auto lg:p-6">
-      <div className="flex rounded-full border border-border bg-surface-muted p-1">
-        <TabButton
-          active={activeTab === "bulanan"}
-          onClick={() => setActiveTab("bulanan")}
-          icon={<HeartIcon />}
-          label="Pendekar Anak"
-        />
-        <TabButton
-          active={activeTab === "satu-kali"}
-          onClick={() => setActiveTab("satu-kali")}
-          icon={<GiftIcon />}
-          label="Donasi satu kali"
-        />
-      </div>
+      <SegmentedTabs
+        items={donationTabItems}
+        activeId={activeTab}
+        onChange={setActiveTab}
+        ariaLabel="Jenis donasi"
+        shape="chip"
+        size="compact"
+        className="border-border bg-surface-muted"
+      />
 
       <div className="mt-4">
         <h2 className="text-base font-bold text-text md:text-lg">{form.title}</h2>
@@ -133,47 +149,5 @@ export function HeroDonationForm() {
         ) : null}
       </div>
     </aside>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex flex-1 items-center justify-center gap-1.5 rounded-full px-2 py-2 text-[11px] font-semibold transition-colors md:gap-2 md:text-xs ${
-        active ? "bg-primary text-white" : "text-text-muted hover:text-primary"
-      }`}
-    >
-      <span className={active ? "text-white" : "text-primary"}>{icon}</span>
-      {label}
-    </button>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-  );
-}
-
-function GiftIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="8" width="18" height="13" rx="1" stroke="currentColor" strokeWidth="2" />
-      <path d="M12 8V21M3 12h18M8.5 8C7 8 5 6.5 5 5c0-1.5 2-2 3.5-.5S12 8 12 8s1.5-3.5 3-3.5S20 3.5 20 5s-2 3-3.5 3" stroke="currentColor" strokeWidth="2" />
-    </svg>
   );
 }

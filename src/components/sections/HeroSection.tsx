@@ -14,8 +14,8 @@ export function HeroSection() {
   } = homeHeroContent;
 
   return (
-    <section aria-labelledby="hero-heading" className="relative w-full">
-      <div className="relative min-h-[calc(100svh-4rem)] md:min-h-[calc(100svh-4.5rem)]">
+    <section aria-labelledby="hero-heading" className="relative w-full bg-surface-muted">
+      <div className="relative min-h-[52vh] md:min-h-[calc(100svh-4.5rem)]">
         <ContentImage
           src="/images/hero/hero-bg.png"
           alt="Anak-anak di sekolah dengan tangki air bersih"
@@ -26,12 +26,12 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-hero-overlay/40" />
 
         <div className="absolute inset-0 flex items-end py-10 md:items-center md:py-12">
-          <Container>
+          <Container className="w-full">
             <div className="grid items-end gap-8 lg:grid-cols-[1fr_360px] lg:items-center lg:gap-10">
-              <div className="max-w-2xl">
-                <p className="mb-3 inline-flex rounded-full bg-surface/95 px-4 py-1.5 text-xs font-semibold text-primary shadow-card md:text-sm">
+              <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
+                {/* <p className="mb-3 hidden rounded-full bg-surface/95 px-4 py-1.5 text-xs font-semibold text-primary shadow-card md:inline-flex md:text-sm">
                   {donorBadge}
-                </p>
+                </p> */}
                 <p className="mb-2 text-sm font-medium text-white/90 md:text-base">
                   {eyebrow}
                 </p>
@@ -48,11 +48,17 @@ export function HeroSection() {
                 </h1>
               </div>
 
-              <HeroDonationForm />
+              <div className="hidden lg:block">
+                <HeroDonationForm />
+              </div>
             </div>
           </Container>
         </div>
       </div>
+
+      <Container className="relative z-10 mt-2.5 pb-8 lg:hidden">
+        <HeroDonationForm />
+      </Container>
     </section>
   );
 }

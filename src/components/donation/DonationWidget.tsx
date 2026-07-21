@@ -16,18 +16,23 @@ import {
   type DonationFormValues,
 } from "@/lib/validation/donation-form";
 import { DonationFormOverlay } from "@/components/donation/DonationFormOverlay";
+import { DonationFormStepper } from "@/components/donation/DonationFormStepper";
 import { DonationStepAmount } from "@/components/donation/DonationStepAmount";
+import { DonationStepCommitment } from "@/components/donation/DonationStepCommitment";
 import { DonationStepDetails } from "@/components/donation/DonationStepDetails";
 import { DonationStepPayment } from "@/components/donation/DonationStepPayment";
+import { DonationStepTransition } from "@/components/donation/DonationStepTransition";
 
 type DonationWidgetProps = {
   campaign: CampaignDetail;
 };
 
 type DonationStep = 1 | 2 | 3;
+type OverlayPhase = "commitment" | "details" | "payment";
 type TransitionDirection = "forward" | "backward";
 
 const EXIT_DURATION_MS = 300;
+const MONTHLY_OFFER_AMOUNT = 150_000;
 
 const initialFormValues: DonationFormValues = {
   paymentMethod: "",
@@ -43,6 +48,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     ? "bulanan"
     : campaign.donationTypes[0];
   const [step, setStep] = useState<DonationStep>(1);
+  const [overlayPhase, setOverlayPhase] = useState<OverlayPhase>("details");
   const [direction, setDirection] = useState<TransitionDirection>("forward");
   const [isExiting, setIsExiting] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -57,6 +63,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
   const [paymentRoute, setPaymentRoute] =
     useState<DonationPaymentMethodId>("bni");
 
+  const supportsMonthly = campaign.donationTypes.includes("bulanan");
   const requiresAddress =
     donationType === "bulanan" || Boolean(campaign.perk);
 
@@ -65,14 +72,13 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
       ? Number(customAmount.replace(/\D/g, "")) || selectedAmount
       : selectedAmount;
 
-  const goToStep = useCallback(
-    (next: DonationStep, nextDirection: TransitionDirection) => {
+  const openOverlay = useCallback(
+    (phase: OverlayPhase, nextDirection: TransitionDirection = "forward") => {
       setDirection(nextDirection);
-      setStep(next);
-      if (next >= 2) {
-        setShowOverlay(true);
-        setIsExiting(false);
-      }
+      setOverlayPhase(phase);
+      setStep(phase === "payment" ? 3 : 2);
+      setShowOverlay(true);
+      setIsExiting(false);
     },
     [],
   );
@@ -83,6 +89,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     setIsExiting(true);
     window.setTimeout(() => {
       setStep(1);
+      setOverlayPhase("details");
       setShowOverlay(false);
       setIsExiting(false);
     }, EXIT_DURATION_MS);
@@ -108,14 +115,23 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     setErrors((prev) => ({ ...prev, paymentMethod: undefined }));
   };
 
-  const handleBack = () => {
-    if (step === 2) {
-      closeOverlay();
+  const handleAmountContinue = () => {
+    if (donationType === "satu-kali" && supportsMonthly) {
+      openOverlay("commitment", "forward");
       return;
     }
-    if (step === 3) {
-      goToStep(2, "backward");
-    }
+    openOverlay("details", "forward");
+  };
+
+  const handleAcceptMonthly = () => {
+    setDonationType("bulanan");
+    setSelectedAmount(MONTHLY_OFFER_AMOUNT);
+    setCustomAmount("");
+    openOverlay("details", "forward");
+  };
+
+  const handleKeepOneTime = () => {
+    openOverlay("details", "forward");
   };
 
   const handleDetailsContinue = () => {
@@ -129,7 +145,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     }
 
     setErrors({});
-    goToStep(3, "forward");
+    openOverlay("payment", "forward");
   };
 
   const handlePaymentContinue = () => {
@@ -154,6 +170,9 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     router.push(getPaymentPath(campaign.id, "processing"));
   };
 
+  const showStepper =
+    overlayPhase === "details" || overlayPhase === "payment";
+
   return (
     <>
       <aside className="rounded-xl border border-border bg-surface p-5 shadow-card lg:p-6">
@@ -169,39 +188,57 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
             setCustomAmount("");
           }}
           onCustomAmountChange={setCustomAmount}
-          onContinue={() => goToStep(2, "forward")}
+          onContinue={handleAmountContinue}
         />
       </aside>
 
       {showOverlay ? (
         <DonationFormOverlay
           campaign={campaign}
-          donationType={donationType}
-          currentStep={step === 2 ? 2 : 3}
-          direction={direction}
+          showStepper={showStepper}
+          stepper={
+            showStepper ? (
+              <DonationFormStepper currentStep={step === 3 ? 3 : 2} />
+            ) : null
+          }
           isExiting={isExiting}
-          onBack={handleBack}
           onClose={closeOverlay}
         >
-          {step === 2 ? (
-            <DonationStepDetails
-              values={formValues}
-              errors={errors}
-              requiresAddress={requiresAddress}
-              onFieldChange={updateField}
-              onContinue={handleDetailsContinue}
-            />
-          ) : (
-            <DonationStepPayment
-              amount={activeAmount}
-              donationType={donationType}
-              benefit={campaign.impactBenefit}
-              selectedMethod={formValues.paymentMethod}
-              error={errors.paymentMethod}
-              onMethodChange={handlePaymentMethodChange}
-              onContinue={handlePaymentContinue}
-            />
-          )}
+          <DonationStepTransition
+            stepKey={`donation-${overlayPhase}`}
+            direction={direction}
+          >
+            {overlayPhase === "commitment" ? (
+              <DonationStepCommitment
+                oneTimeAmount={activeAmount}
+                monthlyAmount={MONTHLY_OFFER_AMOUNT}
+                onAcceptMonthly={handleAcceptMonthly}
+                onKeepOneTime={handleKeepOneTime}
+              />
+            ) : null}
+
+            {overlayPhase === "details" ? (
+              <DonationStepDetails
+                values={formValues}
+                errors={errors}
+                requiresAddress={requiresAddress}
+                onFieldChange={updateField}
+                onContinue={handleDetailsContinue}
+              />
+            ) : null}
+
+            {overlayPhase === "payment" ? (
+              <DonationStepPayment
+                amount={activeAmount}
+                donationType={donationType}
+                benefit={campaign.impactBenefit}
+                selectedMethod={formValues.paymentMethod}
+                error={errors.paymentMethod}
+                onMethodChange={handlePaymentMethodChange}
+                onContinue={handlePaymentContinue}
+              />
+            ) : null}
+          </DonationStepTransition>
         </DonationFormOverlay>
       ) : null}
     </>

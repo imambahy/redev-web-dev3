@@ -1,9 +1,9 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 type SegmentedTabsProps<T extends string> = {
-  items: { id: T; label: string }[];
+  items: { id: T; label: ReactNode }[];
   activeId: T;
   onChange: (id: T) => void;
   ariaLabel?: string;
@@ -11,6 +11,8 @@ type SegmentedTabsProps<T extends string> = {
   equalWidth?: boolean;
   align?: "center" | "start";
   size?: "default" | "compact";
+  /** pill = fully round (default); chip = rounded-lg like donation chips */
+  shape?: "pill" | "chip";
 };
 
 type IndicatorStyle = {
@@ -29,6 +31,7 @@ export function SegmentedTabs<T extends string>({
   equalWidth = true,
   align = "center",
   size = "default",
+  shape = "pill",
 }: SegmentedTabsProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
@@ -76,17 +79,18 @@ export function SegmentedTabs<T extends string>({
   }, [activeId, items]);
 
   const hasIndicator = indicator.width > 0 && indicator.height > 0;
+  const radiusClass = shape === "chip" ? "rounded-lg" : "rounded-full";
 
   return (
     <div
       ref={containerRef}
-      className={`relative flex w-full rounded-full border border-border bg-surface p-1 ${className}`}
+      className={`relative flex w-full overflow-visible border border-border bg-surface p-1 ${radiusClass} ${className}`}
       role="tablist"
       aria-label={ariaLabel}
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute rounded-full bg-primary transition-[left,top,width,height] duration-300 ease-in-out motion-reduce:transition-none"
+        className={`pointer-events-none absolute bg-primary transition-[left,top,width,height] duration-300 ease-in-out motion-reduce:transition-none ${radiusClass}`}
         style={{
           left: hasIndicator ? indicator.left : 0,
           top: hasIndicator ? indicator.top : 0,
@@ -110,7 +114,7 @@ export function SegmentedTabs<T extends string>({
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(item.id)}
-            className={`relative z-10 shrink-0 rounded-full font-semibold whitespace-nowrap transition-colors duration-300 ${
+            className={`relative z-10 shrink-0 overflow-visible font-semibold whitespace-nowrap transition-colors duration-300 ${radiusClass} ${
               size === "compact"
                 ? "px-2 py-2 text-[11px] md:text-xs"
                 : "px-4 py-2.5 text-sm"

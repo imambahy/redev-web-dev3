@@ -5,9 +5,9 @@ type DonationFormStepperProps = {
 };
 
 const steps = [
-  { id: 1, label: "Pilih Donasi" },
+  { id: 1, label: "Isi Data" },
   { id: 2, label: "Isi Data" },
-  { id: 3, label: "Payment" },
+  { id: 3, label: "Pembayaran" },
 ] as const;
 
 export function DonationFormStepper({ currentStep }: DonationFormStepperProps) {
@@ -16,7 +16,6 @@ export function DonationFormStepper({ currentStep }: DonationFormStepperProps) {
       {steps.map((step, index) => {
         const isComplete = step.id < currentStep;
         const isActive = step.id === currentStep;
-        const isUpcoming = step.id > currentStep;
         const connectorActive = step.id < currentStep;
 
         return (
@@ -36,11 +35,7 @@ export function DonationFormStepper({ currentStep }: DonationFormStepperProps) {
               </span>
               <span
                 className={`mt-2 whitespace-nowrap text-center text-[11px] font-semibold md:text-xs ${
-                  isComplete || isActive
-                    ? "text-primary"
-                    : isUpcoming
-                      ? "text-text-muted"
-                      : "text-text-muted"
+                  isComplete || isActive ? "text-primary" : "text-text-muted"
                 }`}
               >
                 {step.label}
@@ -49,7 +44,7 @@ export function DonationFormStepper({ currentStep }: DonationFormStepperProps) {
 
             {index < steps.length - 1 ? (
               <div
-                className="flex min-w-10 flex-1 items-start px-3 pt-[18px] sm:px-4 md:px-5"
+                className="flex min-w-8 flex-1 items-start px-2 pt-[18px] sm:px-3"
                 aria-hidden="true"
               >
                 <div

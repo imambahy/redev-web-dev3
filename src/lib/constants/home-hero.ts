@@ -10,7 +10,7 @@ export const homeHeroContent = {
   featuredCampaignHref: routes.campaign("kembali-sekolah"),
   form: {
     title: "Bantu anak kekurangan air bersih",
-    subtitle: "Galang pendekar anak untuk kalian yang bantu sekarang",
+    subtitle: "Gelang pendekar anak untuk kalian yang bantu sekarang",
     presetAmounts: [300_000, 450_000, 750_000, 1_500_000],
     defaultAmount: 750_000,
     ctaLabel: "Bantu Sekarang",
