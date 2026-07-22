@@ -134,6 +134,14 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     openOverlay("details", "forward");
   };
 
+  const handleBack = () => {
+    if (overlayPhase === "payment") {
+      openOverlay("details", "backward");
+      return;
+    }
+    closeOverlay();
+  };
+
   const handleDetailsContinue = () => {
     const validationErrors = validateDonationDetailsStep(formValues, {
       requiresAddress,
@@ -195,6 +203,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
       {showOverlay ? (
         <DonationFormOverlay
           campaign={campaign}
+          donationType={donationType}
           showStepper={showStepper}
           stepper={
             showStepper ? (
@@ -202,6 +211,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
             ) : null
           }
           isExiting={isExiting}
+          onBack={handleBack}
           onClose={closeOverlay}
         >
           <DonationStepTransition

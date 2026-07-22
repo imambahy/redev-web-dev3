@@ -5,9 +5,9 @@ type DonationFormStepperProps = {
 };
 
 const steps = [
-  { id: 1, label: "Isi Data" },
+  { id: 1, label: "Pilih Donasi" },
   { id: 2, label: "Isi Data" },
-  { id: 3, label: "Pembayaran" },
+  { id: 3, label: "Payment" },
 ] as const;
 
 export function DonationFormStepper({ currentStep }: DonationFormStepperProps) {
