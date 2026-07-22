@@ -42,7 +42,7 @@ const defaultDetail = {
         "Setiap bantuan yang tersalurkan akan dikonversi menjadi jam belajar yang berkualitas, mentor yang membimbing, dan alat peraga yang mampu membuka cakrawala berpikirnya.",
         "Masa depan bangsa dimulai dari pendidikan anak-anak seperti Putri. Mari menjadi bagian dari perjalanan transformatif ini.",
       ],
-      imageSrc: "/images/campaigns/story-mother-child.png",
+      imageSrc: "/images/campaigns/story-rere-support.png",
       imageAlt: "Ibu dan anak",
       ctaLabel: "Bantu Mereka Sekarang",
     },
@@ -53,7 +53,7 @@ const defaultDetail = {
       title: "Donasi Tanpa Beban",
       description:
         "Anda bisa menghentikan donasi kapan saja tanpa biaya tambahan.",
-      imageSrc: "/images/campaigns/story-hampers.png",
+      imageSrc: "/images/campaigns/commitment-donasi-tanpa-beban.png",
       imageAlt: "Donasi tanpa beban",
     },
     {
@@ -61,7 +61,7 @@ const defaultDetail = {
       title: "Hasil Nyata Tiap Bulan",
       description:
         "Terima laporan perkembangan program langsung ke email Anda.",
-      imageSrc: "/images/campaigns/story-mother-child.png",
+      imageSrc: "/images/campaigns/commitment-hasil-nyata.png",
       imageAlt: "Hasil nyata tiap bulan",
     },
     {
