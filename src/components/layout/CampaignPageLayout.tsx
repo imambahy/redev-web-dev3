@@ -8,10 +8,10 @@ type CampaignPageLayoutProps = {
 
 export function CampaignPageLayout({ children }: CampaignPageLayoutProps) {
   return (
-    <>
+    <div className="min-w-0 overflow-x-clip">
       <SiteHeader />
-      <main>{children}</main>
+      <main className="min-w-0">{children}</main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

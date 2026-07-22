@@ -32,13 +32,16 @@
 }
 
 html {
-  scrollbar-gutter: stable;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {
   background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-sans);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 @keyframes donation-backdrop-in {

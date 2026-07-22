@@ -24,8 +24,8 @@ export function SiteHeader({ variant = "primary" }: SiteHeaderProps) {
           isLight ? "border-b border-border bg-surface shadow-header" : "bg-primary"
         }`}
       >
-        <Container className="flex h-16 items-center justify-between md:h-[72px]">
-          <div className="flex shrink-0 items-center gap-3 lg:gap-4">
+        <Container className="flex h-16 min-w-0 items-center justify-between gap-3 md:h-[72px]">
+          <div className="flex min-w-0 shrink-0 items-center gap-3 lg:gap-4">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
@@ -40,7 +40,9 @@ export function SiteHeader({ variant = "primary" }: SiteHeaderProps) {
             <Logo variant={variant} />
           </div>
 
-          <DesktopNavDropdown variant={variant} />
+          <div className="min-w-0 flex-1 overflow-hidden">
+            <DesktopNavDropdown variant={variant} />
+          </div>
 
           <DonorZoneButton />
         </Container>

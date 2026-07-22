@@ -57,30 +57,54 @@ export function CampaignCommitmentSection({
   campaign,
 }: CampaignCommitmentSectionProps) {
   return (
-    <section className="bg-surface-muted py-12 md:py-16">
+    <section className="overflow-x-hidden bg-surface py-12 md:py-16">
       <Container>
-        <h2 className="text-center text-2xl font-bold text-text md:text-3xl">
-          Komitmen Kami untuk Kebaikan Anda
-        </h2>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <div className="mx-auto w-full max-w-[1200px] px-0 text-center">
+          <h2 className="text-[28px] font-bold leading-9 text-[#002c43] md:text-[32px] md:leading-10">
+            Komitmen Kami untuk{" "}
+            <span className="text-primary">Kebaikan</span> Anda
+          </h2>
+          <p className="mx-auto mt-3 max-w-full text-sm leading-6 text-text-muted md:text-base md:leading-7">
+            UNICEF memastikan setiap langkah donasi Anda terlindungi, transparan, dan berdampak langsung bagi masa depan anak-anak.
+          </p>
+        </div>
+
+        {/*
+          Figma cards row: 1200 × 494, gap 24
+          Each card ≈ 384 wide ( (1200 - 48) / 3 )
+          Blue: pad L32 T24 R32 B32, gap 16 title→desc
+          Number: 36/40 SemiBold, top-right with title
+          Desc: 14/21 Regular
+        */}
+        <div className="mx-auto mt-10 grid w-full max-w-[1200px] grid-cols-1 gap-6 md:grid-cols-3 md:gap-6">
           {campaign.commitments.map((item) => (
             <article
               key={item.step}
-              className="overflow-hidden rounded-xl border border-border bg-surface"
+              className="mx-auto flex w-full min-w-0 max-w-[384px] flex-col overflow-hidden rounded-xl md:mx-0 md:h-[494px] md:max-w-none"
             >
-              <div className="bg-primary px-5 py-4">
-                <p className="text-sm font-bold text-white">
-                  {item.step}. {item.title}
+              <div className="flex shrink-0 flex-col gap-4 bg-[#2653B9] px-8 pt-6 pb-8">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="min-w-0 flex-1 pr-2 text-[20px] font-semibold leading-7 text-white">
+                    {item.title}
+                  </h3>
+                  <span
+                    className="shrink-0 text-[36px] font-semibold leading-[40px] text-white"
+                    aria-hidden="true"
+                  >
+                    {item.step}
+                  </span>
+                </div>
+                <p className="text-[14px] font-normal leading-[21px] text-white">
+                  {item.description}
                 </p>
-                <p className="mt-2 text-sm text-white/85">{item.description}</p>
               </div>
-              <div className="relative h-44">
+              <div className="relative aspect-[384/240] w-full md:aspect-auto md:min-h-0 md:flex-1">
                 <Image
                   src={item.imageSrc}
                   alt={item.imageAlt}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 384px"
                 />
               </div>
             </article>

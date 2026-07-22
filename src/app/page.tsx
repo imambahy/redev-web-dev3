@@ -8,9 +8,9 @@ import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 
 export default function Home() {
   return (
-    <>
+    <div className="min-w-0 overflow-x-clip">
       <SiteHeader />
-      <main>
+      <main className="min-w-0">
         <HeroSection />
         <ImpactSection />
         <CampaignSection />
@@ -18,6 +18,6 @@ export default function Home() {
         <TestimonialsSection />
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

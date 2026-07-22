@@ -52,7 +52,7 @@ const defaultDetail = {
       step: 1,
       title: "Donasi Tanpa Beban",
       description:
-        "Anda bisa menghentikan donasi kapan saja tanpa biaya tambahan.",
+        "Sistem autodebit yang fleksibel memudahkan Anda untuk berbagi secara konsisten. Anda memegang kendali penuh untuk menyesuaikan atau berhenti kapan saja tanpa prosedur rumit.",
       imageSrc: "/images/campaigns/commitment-donasi-tanpa-beban.png",
       imageAlt: "Donasi tanpa beban",
     },
@@ -60,7 +60,7 @@ const defaultDetail = {
       step: 2,
       title: "Hasil Nyata Tiap Bulan",
       description:
-        "Terima laporan perkembangan program langsung ke email Anda.",
+        "Kami memastikan donasi Anda langsung disalurkan ke program prioritas. Dapatkan laporan transparansi rutin yang menunjukkan perubahan nyata bagi anak-anak Indonesia.",
       imageSrc: "/images/campaigns/commitment-hasil-nyata.png",
       imageAlt: "Hasil nyata tiap bulan",
     },
@@ -68,8 +68,8 @@ const defaultDetail = {
       step: 3,
       title: "Keamanan Standar Global",
       description:
-        "Transaksi Anda dilindungi dengan standar keamanan internasional.",
-      imageSrc: "/images/testimonials/testimonial.png",
+        "Data dan transaksi Anda dilindungi dengan enkripsi AES-256 dan sertifikasi ISO 27001. Kami menjaga privasi Anda layaknya sistem keamanan perbankan internasional.",
+      imageSrc: "/images/campaigns/commitment-keamananStandarGlobal.png",
       imageAlt: "Keamanan standar global",
     },
   ],

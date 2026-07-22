@@ -14,7 +14,7 @@ export function SiteFooter() {
   return (
     <footer className="bg-footer text-white">
       {/* Desktop: Figma auto-layout — pad 120×40, gap 40 */}
-      <div className="mx-auto w-full max-w-landing px-7 py-10 lg:px-[120px]">
+      <div className="mx-auto w-full min-w-0 max-w-landing px-4 py-10 sm:px-7 lg:px-8 xl:px-16 2xl:px-[120px]">
         {/* Mobile layout */}
         <div className="flex flex-col items-center text-center lg:hidden">
           <FooterBrand />
