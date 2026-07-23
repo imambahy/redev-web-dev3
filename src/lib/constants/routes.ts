@@ -10,6 +10,7 @@ export const routes = {
   donorWall: "/donor-wall",
   donorZone: "/donor-zone",
   aboutUs: "/about-us",
+  privacyPolicy: "/kebijakan-privasi",
 } as const;
 
 export type PaymentStep =

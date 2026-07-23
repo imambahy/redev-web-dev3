@@ -17,7 +17,7 @@ export function FaqPageSection() {
         <div className="mx-auto w-full max-w-[1176px]">
           <div className="grid gap-8 lg:grid-cols-[240px_1fr] lg:gap-12">
           <div
-            className="flex flex-row gap-2 overflow-x-auto lg:flex-col lg:overflow-visible"
+            className="flex flex-row gap-2 overflow-x-auto lg:flex-col lg:overflow-visible pb-6"
             role="tablist"
             aria-label="Kategori FAQ"
           >

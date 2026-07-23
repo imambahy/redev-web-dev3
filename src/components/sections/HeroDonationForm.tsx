@@ -2,9 +2,11 @@
 
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { homeHeroContent } from "@/lib/constants/home-hero";
 import { footerSecurityBadges } from "@/lib/constants/navigation";
+import { routes } from "@/lib/constants/routes";
 import { Button } from "@/components/ui/Button";
 import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
 import { formatCurrency } from "@/lib/utils/format-currency";
@@ -37,7 +39,6 @@ export function HeroDonationForm() {
   const [activeTab, setActiveTab] = useState<HomeDonationTab>("bulanan");
   const [selectedAmount, setSelectedAmount] = useState<number>(form.defaultAmount);
   const [customAmount, setCustomAmount] = useState("");
-  const [showSecurity, setShowSecurity] = useState(false);
 
   const handleContinue = () => {
     const amount =
@@ -118,35 +119,14 @@ export function HeroDonationForm() {
         {form.ctaLabel}
       </Button>
 
-      <div className="mt-4 border-t border-border pt-3">
-        <button
-          type="button"
-          onClick={() => setShowSecurity((prev) => !prev)}
-          className="flex w-full items-center justify-center gap-1 text-sm font-semibold text-primary"
-          aria-expanded={showSecurity}
+      <div className="mt-3 text-center">
+        <Link
+          href={routes.privacyPolicy}
+          className="inline-flex items-center justify-center gap-1 text-sm font-semibold text-primary transition-opacity hover:opacity-80"
         >
           Keamanan dan Privasi
-          <span
-            className={`transition-transform ${showSecurity ? "rotate-90" : ""}`}
-            aria-hidden="true"
-          >
-            ›
-          </span>
-        </button>
-        {showSecurity ? (
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {footerSecurityBadges.map((badge) => (
-              <Image
-                key={badge.src}
-                src={badge.src}
-                alt={badge.alt}
-                width={120}
-                height={40}
-                className="h-7 w-auto object-contain"
-              />
-            ))}
-          </div>
-        ) : null}
+          <span aria-hidden="true">›</span>
+        </Link>
       </div>
     </aside>
   );

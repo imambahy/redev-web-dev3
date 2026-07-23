@@ -3,27 +3,23 @@
 import Image from "next/image";
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import type { CampaignDetail, DonationType } from "@/types/campaign";
+import type { CampaignDetail } from "@/types/campaign";
 import { donationPopupContent } from "@/lib/constants/donation-popup";
 
 type DonationFormOverlayProps = {
   campaign: CampaignDetail;
-  donationType: DonationType;
   showStepper?: boolean;
   stepper?: ReactNode;
   isExiting: boolean;
-  onBack: () => void;
   onClose: () => void;
   children: ReactNode;
 };
 
 export function DonationFormOverlay({
   campaign,
-  donationType,
   showStepper = true,
   stepper,
   isExiting,
-  onBack,
   onClose,
   children,
 }: DonationFormOverlayProps) {
@@ -31,8 +27,6 @@ export function DonationFormOverlay({
   const progress = Math.round(
     (campaign.stats.raised / campaign.stats.goal) * 100,
   );
-  const title =
-    donationType === "bulanan" ? "Pendekar Anak" : "Donasi Satu Kali";
 
   useEffect(() => {
     setMounted(true);
@@ -57,12 +51,12 @@ export function DonationFormOverlay({
         }`}
         role="presentation"
       >
-        <div className="relative h-[28vh] min-h-[160px] w-full shrink-0 sm:h-[30vh]">
+        <div className="relative aspect-[390/290] w-full shrink-0">
           <Image
             src={donationPopupContent.heroImageSrc}
             alt=""
             fill
-            className="object-cover object-[center_30%]"
+            className="object-contain"
             sizes="100vw"
             priority
           />
@@ -71,23 +65,10 @@ export function DonationFormOverlay({
             aria-hidden="true"
           />
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="absolute top-4 right-4 z-20 flex size-9 items-center justify-center rounded-full bg-white text-text shadow-md transition-opacity hover:opacity-90"
-            aria-label="Tutup"
-          >
-            <CloseIcon />
-          </button>
+          <CloseButton onClose={onClose} className="top-4 right-4" />
 
           <div className="absolute inset-x-0 bottom-8 z-10 px-5">
-            <h2 className="max-w-md text-lg font-bold leading-snug text-white">
-              {donationPopupContent.titleBefore}{" "}
-              <span className="text-accent">
-                {donationPopupContent.titleHighlight}
-              </span>{" "}
-              {donationPopupContent.titleAfter}
-            </h2>
+            <HeroTitle />
           </div>
         </div>
 
@@ -95,27 +76,32 @@ export function DonationFormOverlay({
           className={`relative -mt-5 flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-3xl bg-surface shadow-[0_-8px_30px_rgb(0_0_0_/_0.15)] ${
             isExiting ? "donation-modal-exit" : "donation-modal-enter"
           }`}
-          onClick={(event) => event.stopPropagation()}
           role="dialog"
           aria-modal="true"
           aria-labelledby="donation-modal-title-mobile"
         >
           <div className="flex shrink-0 justify-center pt-3 pb-1">
-            <span className="h-1 w-10 rounded-full bg-border" aria-hidden="true" />
+            <span
+              className="h-1 w-10 rounded-full bg-border"
+              aria-hidden="true"
+            />
           </div>
 
           <div className="shrink-0 px-4 pt-3">
             <div className="grid grid-cols-3 gap-2">
-              <MobileStatCard
+              <StatCard
+                variant="dark"
                 label="Orang Berdonasi"
                 value={campaign.stats.donors.toLocaleString("id-ID")}
               />
-              <MobileStatCard
+              <StatCard
+                variant="dark"
                 label="Dana Terkumpul"
                 value={`${progress}%`}
                 progress={progress}
               />
-              <MobileStatCard
+              <StatCard
+                variant="dark"
                 label="Waktu Tersisa"
                 value={`${campaign.stats.daysLeft} Hari`}
               />
@@ -135,18 +121,15 @@ export function DonationFormOverlay({
         </div>
       </div>
 
-      {/* Desktop: centered 2-column modal */}
+      {/* Desktop: 1000×750 centered modal */}
       <div
-        className={`fixed inset-0 z-[100] hidden items-center justify-center p-6 md:p-8 lg:flex ${
-          isExiting
-            ? "donation-backdrop-exit bg-black/50"
-            : "donation-backdrop-enter bg-black/50"
+        className={`fixed inset-0 z-[100] hidden items-center justify-center bg-black/45 p-6 backdrop-blur-md lg:flex ${
+          isExiting ? "donation-backdrop-exit" : "donation-backdrop-enter"
         }`}
-        onClick={onClose}
         role="presentation"
       >
         <div
-          className={`grid h-[75vh] w-[75vw] max-w-6xl overflow-hidden rounded-2xl bg-surface shadow-xl lg:grid-cols-2 ${
+          className={`relative flex h-[750px] w-[1000px] max-h-[calc(100vh-3rem)] max-w-[calc(100vw-3rem)] overflow-hidden rounded-2xl bg-surface shadow-[0_24px_64px_rgb(0_0_0_/_0.35)] ${
             isExiting ? "donation-modal-exit" : "donation-modal-enter"
           }`}
           onClick={(event) => event.stopPropagation()}
@@ -154,27 +137,39 @@ export function DonationFormOverlay({
           aria-modal="true"
           aria-labelledby="donation-modal-title-desktop"
         >
-          <div className="relative min-h-0">
+          <div className="relative h-full w-[58%] shrink-0">
             <Image
-              src={campaign.heroImageSrc}
-              alt={campaign.imageAlt}
+              src={donationPopupContent.heroImageSrc}
+              alt=""
               fill
-              className="object-cover"
-              sizes="37vw"
+              className="object-cover object-[center_20%]"
+              sizes="580px"
               priority
             />
-            <div className="absolute inset-0 bg-hero-overlay/55" aria-hidden="true" />
-            <div className="relative z-10 flex h-full flex-col justify-between p-8">
-              <h2 className="max-w-md text-2xl font-bold leading-tight text-white">
-                {campaign.heroTitle}
-              </h2>
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-black/25"
+              aria-hidden="true"
+            />
+
+            <div className="absolute inset-x-0 top-0 z-10 p-8">
+              <HeroTitle className="max-w-[420px] text-3xl leading-tight" />
+            </div>
+
+            <div className="absolute inset-x-0 bottom-0 z-10 p-6">
               <div className="grid grid-cols-3 gap-3">
-                <DesktopStatCard
+                <StatCard
+                  variant="light"
                   label="Orang Berdonasi"
                   value={campaign.stats.donors.toLocaleString("id-ID")}
                 />
-                <DesktopStatCard label="Dana Terkumpul" value={`${progress}%`} />
-                <DesktopStatCard
+                <StatCard
+                  variant="light"
+                  label="Dana Terkumpul"
+                  value={`${progress}%`}
+                  progress={progress}
+                />
+                <StatCard
+                  variant="light"
                   label="Waktu Tersisa"
                   value={`${campaign.stats.daysLeft} Hari`}
                 />
@@ -182,43 +177,21 @@ export function DonationFormOverlay({
             </div>
           </div>
 
-          <div className="flex min-h-0 flex-col overflow-hidden">
-            <div className="flex shrink-0 items-center gap-3 border-b border-border px-4 py-4 md:px-6">
-              <button
-                type="button"
-                onClick={onBack}
-                className="flex size-9 items-center justify-center rounded-full text-primary hover:bg-primary-light"
-                aria-label="Kembali"
-              >
-                <BackIcon />
-              </button>
-              <h2
-                id="donation-modal-title-desktop"
-                className="flex-1 text-center text-base font-bold text-text md:text-lg"
-              >
-                {title}
-              </h2>
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex size-9 items-center justify-center rounded-full text-text-muted hover:bg-surface-muted hover:text-text"
-                aria-label="Tutup"
-              >
-                <CloseIcon size={18} />
-              </button>
-            </div>
+          <div className="relative flex min-h-0 min-w-0 flex-1 flex-col">
+            <CloseButton
+              onClose={onClose}
+              className="top-4 right-4"
+            />
 
-            <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-4 py-6 md:px-8">
-              {showStepper && stepper ? (
-                <div className="shrink-0">{stepper}</div>
-              ) : null}
-              <div
-                className={`min-h-0 flex-1 overflow-y-auto ${
-                  showStepper && stepper ? "mt-8" : ""
-                }`}
-              >
-                {children}
-              </div>
+            {showStepper && stepper ? (
+              <div className="shrink-0 px-8 pt-8 pr-14">{stepper}</div>
+            ) : null}
+
+            <div className="min-h-0 flex-1 overflow-y-auto px-8 py-8">
+              <h2 id="donation-modal-title-desktop" className="sr-only">
+                Formulir Donasi
+              </h2>
+              {children}
             </div>
           </div>
         </div>
@@ -228,18 +201,75 @@ export function DonationFormOverlay({
   );
 }
 
-function MobileStatCard({
+function HeroTitle({ className = "" }: { className?: string }) {
+  return (
+    <h2 className={`font-bold text-white ${className}`}>
+      {donationPopupContent.titleBefore}{" "}
+      <span className="text-accent">{donationPopupContent.titleHighlight}</span>{" "}
+      {donationPopupContent.titleAfter}
+    </h2>
+  );
+}
+
+function CloseButton({
+  onClose,
+  className = "",
+}: {
+  onClose: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClose}
+      className={`absolute z-20 flex size-9 items-center justify-center rounded-full bg-white text-text shadow-md transition-opacity hover:opacity-90 ${className}`}
+      aria-label="Tutup"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path
+          d="M2 2l10 10M12 2L2 12"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+      </svg>
+    </button>
+  );
+}
+
+function StatCard({
   label,
   value,
   progress,
+  variant,
 }: {
   label: string;
   value: string;
   progress?: number;
+  variant: "dark" | "light";
 }) {
+  if (variant === "light") {
+    return (
+      <div className="rounded-xl bg-white px-3 py-3 shadow-sm">
+        <p className="text-[11px] font-medium text-text">{label}</p>
+        <p className="mt-1 text-xl font-bold text-primary">{value}</p>
+        {typeof progress === "number" ? (
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-border">
+            <div
+              className="h-full rounded-full bg-primary"
+              style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+            />
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-xl bg-[#003144] px-2 py-3 text-center">
-      <p className="text-[9px] font-medium leading-tight text-white/90">{label}</p>
+      <p className="text-[9px] font-medium leading-tight text-white/90">
+        {label}
+      </p>
       <p className="mt-1 text-sm font-bold text-primary">{value}</p>
       {typeof progress === "number" ? (
         <div className="mx-auto mt-1.5 h-1 w-full max-w-[72px] overflow-hidden rounded-full bg-white/25">
@@ -250,41 +280,5 @@ function MobileStatCard({
         </div>
       ) : null}
     </div>
-  );
-}
-
-function DesktopStatCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg bg-white/95 px-3 py-3 text-center shadow-card">
-      <p className="text-[10px] font-semibold text-text-muted">{label}</p>
-      <p className="mt-1 text-lg font-bold text-primary">{value}</p>
-    </div>
-  );
-}
-
-function BackIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        d="M15 18l-6-6 6-6"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function CloseIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path
-        d="M2 2l10 10M12 2L2 12"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }

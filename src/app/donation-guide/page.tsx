@@ -16,6 +16,12 @@ export default function PanduanDonasiPage() {
             <span className="text-white">{hero.titleLine2}</span>
           </>
         }
+        mobileTitle={
+          <>
+            <span className="text-primary">{hero.titleLine1}</span>{" "}
+            <span className="text-[#003144]">{hero.titleLine2}</span>
+          </>
+        }
         subtitle={hero.subtitle}
         imageSrc={hero.imageSrc}
         aspectRatio="1440 / 360"

@@ -5,10 +5,8 @@ import {
   CampaignProgressSection,
   CampaignQuoteSection,
 } from "@/components/donation/CampaignContentSections";
-import {
-  CampaignCommitmentSection,
-  CampaignStoriesSection,
-} from "@/components/donation/CampaignStoriesSection";
+import { CampaignStoriesSection } from "@/components/donation/CampaignStoriesSection";
+import { CampaignCommitmentSection } from "@/components/donation/CampaignCommitmentSection";
 import { ImpactCtaSection } from "@/components/sections/ImpactCtaSection";
 import { getCampaignDetail } from "@/lib/constants/campaign-details";
 
@@ -25,8 +23,8 @@ export default async function CampaignDetailPage({ params }: CampaignDetailPageP
   return (
     <CampaignPageLayout>
       <CampaignHeroSection campaign={campaign} />
-      <CampaignProgressSection campaign={campaign} />
       <CampaignQuoteSection campaign={campaign} />
+      <CampaignProgressSection campaign={campaign} />
       <CampaignStoriesSection campaign={campaign} />
       <CampaignCommitmentSection campaign={campaign} />
       <ImpactCtaSection />

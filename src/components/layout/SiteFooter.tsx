@@ -9,12 +9,13 @@ import {
   footerSocialLinks,
   footerLogoSrc,
 } from "@/lib/constants/navigation";
+import { routes } from "@/lib/constants/routes";
 
 export function SiteFooter() {
   return (
     <footer className="bg-footer text-white">
       {/* Desktop: Figma auto-layout — pad 120×40, gap 40 */}
-      <div className="mx-auto w-full min-w-0 max-w-landing px-4 py-10 sm:px-7 lg:px-8 xl:px-16 2xl:px-[120px]">
+      <div className="mx-auto w-full max-w-landing px-7 py-10 lg:px-[120px]">
         {/* Mobile layout */}
         <div className="flex flex-col items-center text-center lg:hidden">
           <FooterBrand />
@@ -148,9 +149,12 @@ function FooterContactCard({ className = "" }: { className?: string }) {
 function FooterSecurity({ className = "" }: { className?: string }) {
   return (
     <div className={`flex flex-col ${className}`}>
-      <h3 className="text-center text-sm font-semibold text-white lg:text-left">
+      <Link
+        href={routes.privacyPolicy}
+        className="text-center text-sm font-semibold text-white transition-opacity hover:opacity-80 lg:text-left"
+      >
         Keamanan dan Privasi
-      </h3>
+      </Link>
       <div className="mt-3 flex flex-nowrap items-center justify-center gap-2 sm:gap-3 lg:justify-start lg:gap-4">
         {footerSecurityBadges.map((badge) => (
           <Image

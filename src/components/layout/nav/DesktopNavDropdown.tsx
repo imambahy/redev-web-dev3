@@ -95,11 +95,8 @@ export function DesktopNavDropdown({ variant = "primary" }: DesktopNavDropdownPr
 
   return (
     <>
-      <div ref={navRef} className="relative hidden w-full min-w-0 lg:block">
-        <nav
-          className="flex items-center justify-center gap-4 overflow-x-auto xl:gap-6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          aria-label="Navigasi utama"
-        >
+      <div ref={navRef} className="relative hidden lg:block">
+        <nav className="flex items-center gap-6" aria-label="Navigasi utama">
           {navMenuItems.map((item) => (
             <DesktopNavTrigger
               key={item.id}

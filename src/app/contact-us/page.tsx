@@ -11,6 +11,12 @@ export default function KontakPage() {
     <PageLayout>
       <PageHero
         title={<span className="text-accent">{hero.title}</span>}
+        mobileTitle={
+          <>
+            <span className="text-[#003144]">Hubungi </span>
+            <span className="text-primary">Kami</span>
+          </>
+        }
         subtitle={hero.subtitle}
         imageSrc={hero.imageSrc}
         aspectRatio="1440 / 360"

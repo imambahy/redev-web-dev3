@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import type { ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { CampaignDetail } from "@/types/campaign";
 import type { DonationType } from "@/types/campaign";
-import { footerSecurityBadges } from "@/lib/constants/navigation";
+import { routes } from "@/lib/constants/routes";
 import { Button } from "@/components/ui/Button";
+import { SegmentedTabs } from "@/components/ui/SegmentedTabs";
 import { formatCurrency } from "@/lib/utils/format-currency";
 import { DonationImpactMessage } from "@/components/donation/DonationImpactMessage";
 
@@ -21,6 +23,26 @@ type DonationStepAmountProps = {
   onContinue: () => void;
 };
 
+const donationTypeTabItems: { id: DonationType; label: ReactNode }[] = [
+  {
+    id: "bulanan",
+    label: (
+      <>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/donation/penthol-donate-type.svg"
+          alt=""
+          width={40}
+          height={40}
+          className="pointer-events-none absolute top-1/2 left-1 z-10 size-8 -translate-y-[calc(50%+8px)] object-contain md:size-9"
+        />
+        Pendekar Anak
+      </>
+    ),
+  },
+  { id: "satu-kali", label: "Donasi satu kali" },
+];
+
 export function DonationStepAmount({
   campaign,
   donationType,
@@ -32,50 +54,48 @@ export function DonationStepAmount({
   onCustomAmountChange,
   onContinue,
 }: DonationStepAmountProps) {
-  const [showSecurity, setShowSecurity] = useState(false);
+  const tabItems = donationTypeTabItems.filter((item) =>
+    campaign.donationTypes.includes(item.id),
+  );
 
   return (
     <>
-      <div className="flex rounded-full border border-border bg-surface-muted p-1">
-        {campaign.donationTypes.map((type) => {
-          const isActive = donationType === type;
-          return (
-            <button
-              key={type}
-              type="button"
-              onClick={() => onDonationTypeChange(type)}
-              className={`flex-1 rounded-full px-3 py-2 text-xs font-semibold transition-colors md:text-sm ${
-                isActive
-                  ? "bg-primary text-white"
-                  : "text-text-muted hover:text-primary"
-              }`}
-            >
-              {type === "bulanan" ? "Donasi Bulanan" : "Donasi satu kali"}
-            </button>
-          );
-        })}
-      </div>
+      {tabItems.length > 1 ? (
+        <SegmentedTabs
+          items={tabItems}
+          activeId={donationType}
+          onChange={onDonationTypeChange}
+          ariaLabel="Jenis donasi"
+          shape="chip"
+          size="compact"
+          className="overflow-visible border-border bg-surface-muted"
+        />
+      ) : (
+        <div className="relative overflow-visible rounded-lg border border-border bg-primary px-3 py-2.5 text-center text-xs font-semibold text-white md:text-sm">
+          {tabItems[0]?.label ?? "Donasi"}
+        </div>
+      )}
 
       {campaign.perk ? (
-        <div className="mt-4 overflow-hidden rounded-xl bg-primary p-4">
-          <p className="text-center text-sm font-bold text-white">
-            {campaign.perk.label}
-          </p>
-          <div className="mt-3 flex items-end justify-between gap-3">
-            <div className="space-y-2">
+        <div className="mt-4 overflow-hidden rounded-xl bg-[#246FAD]">
+          <div className="grid grid-cols-2 items-stretch gap-2">
+            <div className="flex flex-col gap-2.5 p-3 sm:p-4">
+              <p className="text-[16px] font-bold text-white">
+                {campaign.perk.label}
+              </p>
               <div className="rounded-lg bg-white px-3 py-2">
-                <p className="text-[10px] text-text-muted">Berakhir dalam</p>
-                <p className="text-sm font-bold text-accent">
+                <p className="text-[12px] text-center">Berakhir dalam</p>
+                <p className="text-sm text-center font-bold text-[#F37121] sm:text-base">
                   {campaign.perk.countdown}
                 </p>
               </div>
               <div className="rounded-lg bg-white px-3 py-2">
-                <p className="text-sm font-bold text-accent">
+                <p className="text-[10px] text-center font-semibold text-[#F37121]">
                   Tersisa {campaign.perk.remaining} Pcs
                 </p>
                 <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-border">
                   <div
-                    className="h-full rounded-full bg-accent"
+                    className="h-full rounded-full bg-[#F37121]"
                     style={{
                       width: `${Math.max(
                         8,
@@ -86,13 +106,13 @@ export function DonationStepAmount({
                 </div>
               </div>
             </div>
-            <div className="relative h-20 w-24 shrink-0">
+            <div className="relative min-h-[140px] self-stretch sm:min-h-[160px]">
               <Image
                 src={campaign.perk.imageSrc}
                 alt=""
                 fill
-                className="object-contain object-bottom"
-                sizes="96px"
+                className="object-contain object-right-bottom p-1 sm:p-2"
+                sizes="180px"
               />
             </div>
           </div>
@@ -143,35 +163,14 @@ export function DonationStepAmount({
         {campaign.ctaLabel ?? "Bantu Sekarang"}
       </Button>
 
-      <div className="mt-4 border-t border-border pt-3">
-        <button
-          type="button"
-          onClick={() => setShowSecurity((prev) => !prev)}
-          className="flex w-full items-center justify-center gap-1 text-sm font-semibold text-primary"
-          aria-expanded={showSecurity}
+      <div className="mt-3 text-center">
+        <Link
+          href={routes.privacyPolicy}
+          className="inline-flex items-center justify-center gap-1 text-sm font-semibold text-primary transition-opacity hover:opacity-80"
         >
           Keamanan dan Privasi
-          <span
-            className={`transition-transform ${showSecurity ? "rotate-90" : ""}`}
-            aria-hidden="true"
-          >
-            ›
-          </span>
-        </button>
-        {showSecurity ? (
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {footerSecurityBadges.map((badge) => (
-              <Image
-                key={badge.src}
-                src={badge.src}
-                alt={badge.alt}
-                width={120}
-                height={40}
-                className="h-7 w-auto object-contain"
-              />
-            ))}
-          </div>
-        ) : null}
+          <span aria-hidden="true">›</span>
+        </Link>
       </div>
     </>
   );

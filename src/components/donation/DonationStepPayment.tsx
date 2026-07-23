@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import type { DonationType } from "@/types/campaign";
 import {
   donationPaymentCategories,
@@ -83,16 +84,22 @@ export function DonationStepPayment({
                   : "border-border bg-surface hover:border-primary/40"
               }`}
             >
-              <span className="flex items-center gap-3">
-                <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">
-                  {method.label.slice(0, 2).toUpperCase()}
+              <span className="flex min-w-0 items-center gap-3">
+                <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
+                  <Image
+                    src={method.logoSrc}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="h-7 w-auto max-w-[36px] object-contain"
+                  />
                 </span>
                 <span className="text-sm font-semibold text-text">
                   {method.label}
                 </span>
               </span>
               <span
-                className={`flex size-5 items-center justify-center rounded-full border-2 ${
+                className={`flex size-5 shrink-0 items-center justify-center rounded-full border-2 ${
                   isSelected ? "border-accent" : "border-border bg-surface"
                 }`}
                 aria-hidden="true"

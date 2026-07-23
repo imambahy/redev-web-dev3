@@ -32,16 +32,13 @@
 }
 
 html {
-  overflow-x: clip;
-  max-width: 100%;
+  scrollbar-gutter: stable;
 }
 
 body {
   background: var(--color-surface);
   color: var(--color-text);
   font-family: var(--font-sans);
-  overflow-x: clip;
-  max-width: 100%;
 }
 
 @keyframes donation-backdrop-in {
@@ -120,6 +117,38 @@ body {
 
 .donation-modal-exit {
   animation: donation-modal-out 300ms ease-in both;
+}
+
+@media (min-width: 1024px) {
+  @keyframes donation-modal-desktop-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes donation-modal-desktop-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(1rem) scale(0.98);
+    }
+  }
+
+  .donation-modal-enter {
+    animation: donation-modal-desktop-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .donation-modal-exit {
+    animation: donation-modal-desktop-out 220ms ease-in both;
+  }
 }
 
 .donation-step-enter-forward {

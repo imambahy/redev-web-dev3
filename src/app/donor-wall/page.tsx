@@ -17,6 +17,13 @@ export default function DonorWallPage() {
             <span className="block text-accent">{hero.titleLine3}</span>
           </>
         }
+        mobileTitle={
+          <>
+            <span className="block text-[#003144]">{hero.titleLine1}</span>
+            <span className="block text-primary">{hero.titleLine2}</span>
+            <span className="block text-primary">{hero.titleLine3}</span>
+          </>
+        }
         subtitle={hero.subtitle}
         imageSrc={hero.imageSrc}
         aspectRatio="1440 / 640"

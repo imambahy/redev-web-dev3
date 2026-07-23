@@ -19,6 +19,13 @@ export default function FaqPage() {
             </span>
           </>
         }
+        mobileTitle={
+          <>
+            <span className="text-[#003144]">{hero.titleLine1} </span>
+            <span className="text-[#003144]">{hero.titleLine2Prefix} </span>
+            <span className="text-primary">{hero.titleHighlight}</span>
+          </>
+        }
         subtitle={hero.subtitle}
         imageSrc={hero.imageSrc}
         aspectRatio="1440 / 360"
