@@ -9,6 +9,7 @@ import {
   type DonationPaymentMethodId,
 } from "@/lib/constants/payment";
 import {
+  composeDonationAddress,
   normalizePhoneNumber,
   validateDonationDetailsStep,
   validateDonationPaymentStep,
@@ -39,6 +40,10 @@ const initialFormValues: DonationFormValues = {
   name: "",
   email: "",
   phone: "",
+  province: "",
+  city: "",
+  district: "",
+  postalCode: "",
   address: "",
 };
 
@@ -109,6 +114,17 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
+  const updateFields = (fields: Partial<DonationFormValues>) => {
+    setFormValues((prev) => ({ ...prev, ...fields }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      Object.keys(fields).forEach((field) => {
+        next[field as keyof DonationFormValues] = undefined;
+      });
+      return next;
+    });
+  };
+
   const handlePaymentMethodChange = (methodId: string, route: string) => {
     setFormValues((prev) => ({ ...prev, paymentMethod: methodId }));
     setPaymentRoute(route as DonationPaymentMethodId);
@@ -161,6 +177,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
       JSON.stringify({
         ...formValues,
         phone: normalizePhoneNumber(formValues.phone),
+        address: composeDonationAddress(formValues),
         amount: activeAmount,
         donationType,
       }),
@@ -224,6 +241,7 @@ export function DonationWidget({ campaign }: DonationWidgetProps) {
                 errors={errors}
                 requiresAddress={requiresAddress}
                 onFieldChange={updateField}
+                onFieldsChange={updateFields}
                 onContinue={handleDetailsContinue}
               />
             ) : null}

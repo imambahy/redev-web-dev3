@@ -6,10 +6,15 @@ export const DONATION_FORM_ERRORS = {
   email: "Masukkan Alamat Email Anda dengan Benar",
   phone: "Pastikan Nomor Telepon Sudah Benar",
   phoneMaxLength: "Nomor Telepon Maksimal 13 digit",
+  provinceRequired: "Pilih Provinsi Anda",
+  cityRequired: "Pilih Kota/Kabupaten Anda",
+  districtRequired: "Pilih Kecamatan Anda",
+  postalCodeRequired: "Pilih Kode Pos Anda",
+  postalCodeInvalid: "Kode Pos harus berupa angka",
   addressRequired: "Masukkan Alamat Lengkap Anda",
   addressMaxLength: "Input Alamat Maksimum 255 Karakter",
   addressInvalid: "Masukkan hanya angka, huruf, titik, atau koma",
-  addressHouseNumber: "Masukkan Nomor Rumah dan Kode Pos Anda",
+  addressHouseNumber: "Masukkan Nomor Rumah pada Alamat Lengkap",
 } as const;
 
 export type DonationFormValues = {
@@ -17,6 +22,10 @@ export type DonationFormValues = {
   name: string;
   email: string;
   phone: string;
+  province: string;
+  city: string;
+  district: string;
+  postalCode: string;
   address: string;
 };
 
@@ -27,7 +36,6 @@ export type DonationFormErrors = Partial<
 const NAME_PATTERN = /^[\p{L}\s,.]+$/u;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ADDRESS_PATTERN = /^[\p{L}\p{N}\s,.]+$/u;
-
 export function isNameCharAllowed(char: string) {
   return /^[\p{L}\s,.]$/u.test(char);
 }
@@ -41,6 +49,10 @@ export function isPhoneCharAllowed(char: string, currentValue: string) {
 
 export function isAddressCharAllowed(char: string) {
   return /^[\p{L}\p{N}\s,.]$/u.test(char);
+}
+
+export function isPostalCodeCharAllowed(char: string) {
+  return /^\d$/.test(char);
 }
 
 export function sanitizeNameInput(value: string) {
@@ -57,6 +69,10 @@ export function sanitizeAddressInput(value: string) {
   return value.replace(/[^\p{L}\p{N}\s,.]/gu, "");
 }
 
+export function sanitizePostalCodeInput(value: string) {
+  return value.replace(/\D/g, "").slice(0, 5);
+}
+
 export function normalizePhoneNumber(phone: string) {
   const digits = phone.replace(/\D/g, "");
 
@@ -71,8 +87,35 @@ export function normalizePhoneNumber(phone: string) {
   return `62${digits}`;
 }
 
+export function composeDonationAddress(
+  values: Pick<
+    DonationFormValues,
+    "province" | "city" | "district" | "postalCode" | "address"
+  >,
+) {
+  return [
+    values.province.trim(),
+    values.city.trim(),
+    values.district.trim(),
+    values.postalCode.trim(),
+    values.address.trim(),
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
 export function validateDonationDetailsStep(
-  values: Pick<DonationFormValues, "name" | "email" | "phone" | "address">,
+  values: Pick<
+    DonationFormValues,
+    | "name"
+    | "email"
+    | "phone"
+    | "province"
+    | "city"
+    | "district"
+    | "postalCode"
+    | "address"
+  >,
   options: { requiresAddress: boolean },
 ): DonationFormErrors {
   const errors: DonationFormErrors = {};
@@ -101,6 +144,25 @@ export function validateDonationDetailsStep(
   }
 
   if (options.requiresAddress) {
+    if (!values.province.trim()) {
+      errors.province = DONATION_FORM_ERRORS.provinceRequired;
+    }
+
+    if (!values.city.trim()) {
+      errors.city = DONATION_FORM_ERRORS.cityRequired;
+    }
+
+    if (!values.district.trim()) {
+      errors.district = DONATION_FORM_ERRORS.districtRequired;
+    }
+
+    const postalCode = values.postalCode.trim();
+    if (!postalCode) {
+      errors.postalCode = DONATION_FORM_ERRORS.postalCodeRequired;
+    } else if (!/^\d{5}$/.test(postalCode)) {
+      errors.postalCode = DONATION_FORM_ERRORS.postalCodeInvalid;
+    }
+
     const address = values.address.trim();
     if (!address) {
       errors.address = DONATION_FORM_ERRORS.addressRequired;
@@ -110,7 +172,7 @@ export function validateDonationDetailsStep(
       errors.address = DONATION_FORM_ERRORS.addressInvalid;
     } else if (!/\p{L}/u.test(address)) {
       errors.address = DONATION_FORM_ERRORS.addressRequired;
-    } else if (address.length < 10) {
+    } else if (address.length < 5) {
       errors.address = DONATION_FORM_ERRORS.addressRequired;
     } else if (!/\d/.test(address)) {
       errors.address = DONATION_FORM_ERRORS.addressHouseNumber;
